@@ -3,18 +3,18 @@
 #include <stdlib.h>
 
 //Deklarasi Function
-void program_end(); //line 25
-void handling(); //line 32
-void menu_utama(); //line 55
+void handling(); 
+void menu_utama(); 
 void menu_kalkulasi();
 void menu_data();
-void menu_help(); //line 91
-void help_pemakaian(); //line 118
-void help_kalkulasi(); //line 136
-void help_sumber(); //line 154
-void help_kontak(); //line 172
+void menu_help(); 
+void help_pemakaian(); 
+void help_kalkulasi(); 
+void help_sumber(); 
+void help_kontak(); 
 void menu_credit();
-int submenu_end(); //line 38
+void program_end(); 
+int submenu_end(); 
 
 
 int main(){	
@@ -54,7 +54,7 @@ int submenu_end(){
 //Function untuk menu utama atau menu startup
 void menu_utama(){
 	int result = 0;
-	printf("Emission and Price Calculator for Electrical Appliances (EPCEA)\nBy Kelompok 4\n");
+	printf("Emission of GHG and Price Calculator for Electrical Appliances (EPCEA Jakarta Ver.)\nBy Kelompok 4\n");
 	printf("---------------------------------------------------------");
 	printf("\n1. Kevin Raihan\n2. Hanif Nur Ilham Sanjaya\n3. Tjokorde Gde Agung Abel Putra\n4. Samuel Tanaka Sibarani\n");
 	printf("---------------------------------------------------------");
@@ -87,25 +87,51 @@ void menu_utama(){
 	}
 }
 
+void menu_kalkulasi(){
+//Rumus : kwh = kw x h 
+//		  co2 = kwh x co2/h
+//		  Rp  = kwh x Rp/kwh
+typedef struct input{
+	char devicename [50];
+	float kw;
+	float h;
+	float co2_h;
+	int rp_kwh;
+}device;
+	int counter, continuation;
+	int* biaya;
+	int* co2;
+	biaya = (int *) calloc (1, sizeof(int));
+	co2 = (int *) calloc (1, sizeof(int));
+	
+	continuation = 1;
+	while (continuation==1){
+		//ini buat input data
+	}
+	printf("CALCULATION\n\n");
+	printf("Menghitung Emisi CO2 per Jam");
+	printf("");//ini ngeprint hasil data
+}
+
 //Function untuk submenu help
 void menu_help(){
 	int input;
 	printf("HELP\n\n");
 	printf("MAIN PURPOSE\nProgram EPCEA berfungsi untuk menghitung emisi karbon yang dihasilkan suatu rumah tangga berdasarkan penggunaan alat elektronik dalam jangka waktu 1 (satu) hari.\n\nFITUR TAMBAHAN\nSelain emisi karbon, Program juga akan menghitung biaya listrik sesuai dengan durasi pemakaian\n\nBENEFIT FOR USERS\nDengan menggunakan program ini user dapat berkontribusi dalam penerapan climate action dengan meningkatkan awareness akankan emisi dihasilkan rumah tangga serta dapat mengurangi emisi dihasilkan rumah tangga sendiri dengan membatasi penggunaan alat elektronik.\nUser juga dapat menghemat biaya listrik");
-	printf("\n\nBANTUAN TAMBAHAN\n1. CARA PEMAKAIAN\n2. KALKULASI\n3. SUMBER INFORMASI\n4. CONTACT US!");
+	printf("\n\nBANTUAN TAMBAHAN\n1. CARA PEMAKAIAN\n2. KALKULASI\n3. SUMBER INFORMASI\n4. CONTACT US!\n\n");
 	input = submenu_end();
 		switch (input){
 			case 1 :
-				help_pemakaian(); //function di-define pada line 118
+				help_pemakaian(); //function 
 				break;
 			case 2 : 
-				help_kalkulasi(); //function di-define pada line 136
+				help_kalkulasi(); //function 
 				break;
 			case 3 :
-				help_sumber(); //function di-define pada line 154
+				help_sumber(); //function 
 				break;
 			case 4 :
-				help_kontak(); //function di-define pada line 172
+				help_kontak(); //function 
 				break;
 			default :
 				printf("WARNING :\nPILIHAN TIDAK TERSEDIA\nSILAHKAN MENGULANG INPUT\n");
@@ -118,8 +144,9 @@ void menu_help(){
 void help_pemakaian(){
 	int input;
 	system("cls");
-	//penjelasan cara pemakaian
-	printf("ini cara pemakaian\n");
+	//penjelasan cara pemakaian 
+	printf("CARA PEMAKAIAN\nAwal start program, pilihlah menu MULAI KALKULASI,lalu user diminta untuk mengisi nama dan atau jenis alat elektronik yang akan dihitung. Lalu user akan diminta untuk menginput variable variable yang diperlukan untuk menghitung CO2 dan Biaya listrik untuk tiap device.\nUser dapat memilih untuk menghitung device lain semaunya user hingga user menginput (INSERT SENTINEL HERE) sehingga program tidak akan meminta input lagi dan menjumlahkan total CO2/hari dan Biaya Listrik/hari dari seluruh alat elektronik dan menampilkannya\n\n");
+	printf("Pilihan TAMPILKAN DATA akan menampilkan hasil kalkulasi dalam bentuk yang lebih teratur\n\n");
 	printf("\n1 untuk kembali ke menu HELP");
 	input = submenu_end();
 		if(input==1){
@@ -137,7 +164,7 @@ void help_kalkulasi(){
 	int input;
 	system("cls");
 	//penjelasan rumus apa yang dipakai
-	printf("ini rumus yang digunakan\n");
+	printf("RUMUS KALKULASI\nRumus yang digunakan antara lain \n\nRumus Emisi CO2 per Hari :\nCO2 per jam x kWh\n\nRumus Biaya Listrik Rp per kWh x kWh\n\nRumus kWh\nkWh = kW x h\n\ndetails: \nkWh = Kilowatt hour atau Kilowatt per jam\nh  = hour atau jam\n\n");
 	printf("\n1 untuk kembali ke menu HELP");
 	input = submenu_end();
 		if(input==1){
@@ -155,7 +182,7 @@ void help_sumber(){
 	int input;
 	system("cls");
 	//penjelasan sumber informasi untuk rumus, standar biaya, standar emisi yang dihasilkan
-	printf("ini cara pemakaian\n");
+	printf("SUMBER INFORMASI\nSumber Rumus yang digunakan:\nhttps://greenstarsproject.org/2016/12/30/how-to-calculate-carbon-footprint-home-appliances/\n\nSumber informasi mengenai biaya standar di Jakarta:\nhttps://ekonomi.bisnis.com/read/20221001/44/1583153/simak-tarif-listrik-pln-oktober-desember-2022-ini-daftar-lengkapnya\n\nSumber informasi mengenai standar emisi co2 yang dihasilkan oleh alat elektronik: \nhttps://www.kapitalelectric.com/blog/how-much-carbon-pollution-do-your-appliances-and-electronics-emit/\n\n");
 	printf("\n1 untuk kembali ke menu HELP");
 	input = submenu_end();
 		if(input==1){
