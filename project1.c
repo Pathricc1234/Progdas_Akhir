@@ -1,11 +1,12 @@
 //Library yang digunakan
 #include <stdio.h>
 #include <stdlib.h>
-//tes
+
 //Deklarasi Function
 void handling(); 
 void menu_utama(); 
 void menu_kalkulasi();
+float kalkulasi_rp_kwh();
 void menu_data();
 void menu_help(); 
 void help_pemakaian(); 
@@ -64,7 +65,7 @@ void menu_utama(){
 		switch (result){
 			case 1 :
 				system("cls");
-				printf("ini kalkulasi");//Placeholder, Ganti dengan function kalkulasi yang bakal ngitung dan nyimpan data, nanti di akhir function mungkin bisa ditambahkan saran untuk user 
+				menu_kalkulasi(); //unfinished function
 				break;
 			case 2 : 
 			system("cls");
@@ -91,27 +92,83 @@ void menu_kalkulasi(){
 //Rumus : kwh = kw x h 
 //		  co2 = kwh x co2/h
 //		  Rp  = kwh x Rp/kwh
-typedef struct input{
-	char devicename [50];
+typedef struct{
+	char name [50];
 	float kw;
 	float h;
 	float co2_h;
-	int rp_kwh;
-}device;
-	int counter, continuation;
+}input;
+
+	int counter = 0, continuation = 1, n = 1, daya;
 	int* biaya;
 	int* co2;
-	biaya = (int *) calloc (1, sizeof(int));
-	co2 = (int *) calloc (1, sizeof(int));
-	
-	continuation = 1;
-	while (continuation==1){
-		//ini buat input data
-	}
+	float rp_kwh;
+	input* device;
+	device = (input *) calloc (n, sizeof(input));
+	biaya = (int *) calloc (n, sizeof(int)); //ini pindahin setelah input aja
+	co2 = (int *) calloc (n, sizeof(int)); //ini juga
+
 	printf("CALCULATION\n\n");
+	rp_kwh = kalkulasi_rp_kwh();
+	system("cls");
+	printf("Biaya listrik per kWh : Rp. %.2f per kwh\n\n", rp_kwh);
+	while (continuation==1){
+		//Input nama device atau alat elektronik
+		printf("\nNama Device :	");
+		scanf("%s", &device[counter].name);
+		printf("kW Per Jam :	");
+		scanf("%f", &device[counter].kw);
+		printf("Durasi Penggunaan Per Hari (Jam) :	");
+		scanf("%f", &device[counter].h);
+		printf("Emisi CO2 Per Jam :	");
+		scanf("%f", &device[counter].co2_h);
+		printf("Tambahkan Device lain?\n1=iya 2=tidak\nInput : ");
+		scanf("%d", &continuation);
+			if(continuation==1){
+				counter++;
+				n++;
+				device = (input *) realloc (device, n);
+			}
+			else 
+			break;
+	}
 	printf("Menghitung Emisi CO2 per Jam");
 	printf("");//ini ngeprint hasil data
 }
+
+//function untuk menginput kalkulasi rp per kwh
+float kalkulasi_rp_kwh(){
+	float rp_kwh;
+	int daya;
+	printf("Pilih besaran daya rumah tangga anda\n");
+	printf("1. 450 VA (Rp. 415/kWh)\n2. 900 VA (Rp. 605/kWh)\n3. 900 VA RTM (Rumah Tangga Mampu)(Rp. 1352/kWh)\n4. 1300-2200 VA(Rp. 1444,70/kWh)\n5. 3500+ VA(Rp. 1699,53/kWh)\nInput :");
+	scanf("%d", &daya);
+	switch (daya){
+		case 1 :
+			rp_kwh = 415;
+			break;
+		case 2 :
+			rp_kwh = 605;
+			break;
+		case 3 :
+			rp_kwh = 1352;
+			break;
+		case 4 :
+			rp_kwh = 1444.70;
+			break;
+		case 5 :
+			rp_kwh = 1699.53;
+			break;
+		default :
+			printf("WARNING : PILIHAN TIDAK TERSEDIA\nSILAHKAN MENGULANG LAGI");
+			handling();
+			kalkulasi_rp_kwh();
+			break;
+	}
+	return rp_kwh;
+}
+
+
 
 //Function untuk submenu help
 void menu_help(){
