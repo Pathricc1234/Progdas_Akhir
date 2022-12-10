@@ -91,10 +91,10 @@ void menu_utama(){
 }
 
 void menu_kalkulasi(){
-//Rumus : kwh = kw x h 
+//Rumus : kwh = kw x h
 //		  co2 = kwh x co2/h
 //		  Rp  = kwh x Rp/kwh
-typedef struct{
+struct device{
 	char name [50];
 	float kw;
 	float h;
@@ -102,50 +102,48 @@ typedef struct{
 	float co2_h;
 	int biaya;
 	int co2;
-}input;
+};
 
-	int counter, n;
-	int* biaya;
-	int* co2;
-	float rp_kwh;
-	input *device;
-
+    int counter,n;
+    float rp_kwh;
+    struct device *dataInput;
 	printf("CALCULATION\n\n");
 	rp_kwh = kalkulasi_rp_kwh();
 	system("cls");
 	printf("Biaya listrik : Rp. %.2f per kwh\n\n", rp_kwh);
-
 	printf("Jumlah Device yang akan di-input\t: ");
 	scanf("%d",&n);
+	dataInput = (struct device*) malloc(n * sizeof(struct device));
 
-	device = (input *) calloc (n, sizeof(input));
-	
+
 	for(counter = 0; counter < n; counter++){
 		//Input nama device atau alat elektronik
 		printf("\n\nJenis device\t\t\t\t: ");
-		scanf(" %[^\n]", &device[counter].name);
+		scanf("\n");
+		scanf("%[^\n]s", &(dataInput + counter)-> name);
 		printf("KW per jam\t\t\t\t: ");
-		scanf("%f", &device[counter].kw);
+		scanf("%f", &(dataInput + counter)-> kw);
 		printf("Durasi penggunaan per hari (Jam)\t: ");
-		scanf("%f", &device[counter].h);
+		scanf("%f", &(dataInput + counter)-> h);
 		printf("Emisi CO2 per jam\t\t\t: ");
-		scanf("%f", &device[counter].co2_h);
-	} 
+		scanf("%f", &(dataInput + counter)-> co2_h);
+	}
 
 	printf("\nMenghitung Emisi CO2 per Jam\n");
 	for(counter = 0; counter < n; counter++){
-		device[counter].kwh = device[counter].kw * device[counter].h;
-		device[counter].co2 = device[counter].kwh * device[counter].co2_h;
-		device[counter].biaya = device[counter].kwh * rp_kwh;
-		printf("Kalkulasi %s:\n",device[counter].name);
-		printf("KWH\t: %.2f\n", device[counter].kwh);
-		printf("CO2\t: %d gram\n", device[counter].co2);
-		printf("Biaya\t: %d Rupiah\n", device[counter].biaya);
+		(dataInput + counter)-> kwh = (dataInput + counter)-> kw * (dataInput + counter)-> h;
+		(dataInput + counter)-> co2 = (dataInput + counter)-> kwh * (dataInput + counter)-> co2_h;
+		(dataInput + counter)-> biaya = (dataInput + counter)-> kwh * rp_kwh;
+		printf("Kalkulasi %s:\n",(dataInput + counter)-> name);
+		printf("KWH\t: %.2f\n", (dataInput + counter)-> kwh);
+		printf("CO2\t: %d gram\n", (dataInput + counter)-> co2);
+		printf("Biaya\t: %d Rupiah\n", (dataInput + counter)-> biaya);
 		printf("\n");
 	}
 
 	printf("\nTekan tombol apapun untuk kembali ke menu utama\n");
 	system("pause");
+	free(dataInput);
 	system("cls");
 	menu_utama();
 }
