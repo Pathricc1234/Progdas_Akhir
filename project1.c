@@ -31,9 +31,9 @@ void program_end(){
 
 //Untuk Error Handling jika user menginput angka yang tidak sesuai dengan pilihan diberikan
 void handling(){
-	system("cls");
 	printf("\a");
 	system("pause");
+	system("cls");
 }
 
 //Untuk memberikan pilihan kepada user untuk kembali ke menu utama atau mengakhiri program ketika user membuka sebuah submenu
