@@ -31,8 +31,9 @@ void program_end(){
 
 //Untuk Error Handling jika user menginput angka yang tidak sesuai dengan pilihan diberikan
 void handling(){
-	system("pause");
 	system("cls");
+	printf("\a");
+	system("pause");
 }
 
 //Untuk memberikan pilihan kepada user untuk kembali ke menu utama atau mengakhiri program ketika user membuka sebuah submenu
@@ -83,6 +84,7 @@ void menu_utama(){
 			default :
 				printf("WARNING :\nPILIHAN TIDAK TERSEDIA\nSILAHKAN MENGULANG INPUT\n");
 				handling();
+				system("cls");
 				menu_utama();
 				break;
 	}
@@ -96,44 +98,56 @@ typedef struct{
 	char name [50];
 	float kw;
 	float h;
+	float kwh;
 	float co2_h;
+	int biaya;
+	int co2;
 }input;
 
-	int counter = 0, continuation = 1, n = 1, daya;
+	int counter, n;
 	int* biaya;
 	int* co2;
 	float rp_kwh;
-	input* device;
-	device = (input *) calloc (n, sizeof(input));
-	biaya = (int *) calloc (n, sizeof(int)); //ini pindahin setelah input aja
-	co2 = (int *) calloc (n, sizeof(int)); //ini juga
+	input *device;
 
 	printf("CALCULATION\n\n");
 	rp_kwh = kalkulasi_rp_kwh();
 	system("cls");
-	printf("Biaya listrik per kWh : Rp. %.2f per kwh\n\n", rp_kwh);
-	while (continuation==1){
+	printf("Biaya listrik : Rp. %.2f per kwh\n\n", rp_kwh);
+
+	printf("Jumlah Device yang akan di-input\t: ");
+	scanf("%d",&n);
+
+	device = (input *) calloc (n, sizeof(input));
+	
+	for(counter = 0; counter < n; counter++){
 		//Input nama device atau alat elektronik
-		printf("\nNama Device :	");
-		scanf("%s", &device[counter].name);
-		printf("kW Per Jam :	");
+		printf("\n\nJenis device\t\t\t\t: ");
+		scanf(" %[^\n]", &device[counter].name);
+		printf("KW per jam\t\t\t\t: ");
 		scanf("%f", &device[counter].kw);
-		printf("Durasi Penggunaan Per Hari (Jam) :	");
+		printf("Durasi penggunaan per hari (Jam)\t: ");
 		scanf("%f", &device[counter].h);
-		printf("Emisi CO2 Per Jam :	");
+		printf("Emisi CO2 per jam\t\t\t: ");
 		scanf("%f", &device[counter].co2_h);
-		printf("Tambahkan Device lain?\n1=iya 2=tidak\nInput : ");
-		scanf("%d", &continuation);
-			if(continuation==1){
-				counter++;
-				n++;
-				device = (input *) realloc (device, n);
-			}
-			else 
-			break;
+	} 
+
+	printf("\nMenghitung Emisi CO2 per Jam\n");
+	for(counter = 0; counter < n; counter++){
+		device[counter].kwh = device[counter].kw * device[counter].h;
+		device[counter].co2 = device[counter].kwh * device[counter].co2_h;
+		device[counter].biaya = device[counter].kwh * rp_kwh;
+		printf("Kalkulasi %s:\n",device[counter].name);
+		printf("KWH\t: %.2f\n", device[counter].kwh);
+		printf("CO2\t: %d gram\n", device[counter].co2);
+		printf("Biaya\t: %d Rupiah\n", device[counter].biaya);
+		printf("\n");
 	}
-	printf("Menghitung Emisi CO2 per Jam");
-	printf("");//ini ngeprint hasil data
+
+	printf("\nTekan tombol apapun untuk kembali ke menu utama\n");
+	system("pause");
+	system("cls");
+	menu_utama();
 }
 
 //function untuk menginput kalkulasi rp per kwh
@@ -167,8 +181,6 @@ float kalkulasi_rp_kwh(){
 	}
 	return rp_kwh;
 }
-
-
 
 //Function untuk submenu help
 void menu_help(){
